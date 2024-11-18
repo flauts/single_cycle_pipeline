@@ -45,10 +45,17 @@ module decode (
 				else
 					controls = 10'b0000001001;
 			2'b01:
-				if (Funct[0])
+				if (Funct[0]) begin
+				    if(~Funct[5]) //inmediate
 					controls = 10'b0001111000;
-				else
+					else controls = 10'b0001011000; //no inmediate
+				end //mentoreg 1 in both for imm mux
+				else 
+				begin
+				if(~Funct[5]) 
 					controls = 10'b1001110100;
+				else controls = 10'b1001010100;
+                end         
 			2'b10: controls = 10'b0110100010;
 			default: controls = 10'bxxxxxxxxxx;
 		endcase
@@ -83,7 +90,7 @@ module decode (
             NoWrite = (Funct[4:3] == 2'b10);
 		end
 		else begin
-			ALUControl = 2'b00;
+		    ALUControl = (Op == 2'b01 & ~Funct[3]) ? 3'b001:3'b000;
 			FlagW = 2'b00;
 		end
 	assign PCS = ((Rd == 4'b1111) & RegW) | Branch;

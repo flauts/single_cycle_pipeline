@@ -61,6 +61,7 @@ module datapath (
 	wire [31:0] ShiftedSrcB;
 	wire [31:0] PreResult;
 	wire [31:0] RotExtImm;
+	wire [31:0] Imm;
 	input wire [3:0] rot_imm; 
 	
 	mux2 #(32) pcmux(
@@ -158,6 +159,13 @@ module datapath (
 	   .y(RotExtImm)
 	);
 	
+	mux2 #(32) immux(
+	   .d0(RotExtImm),
+	   .d1(ExtImm),
+	   .s(MemtoReg),
+	   .y(Imm)
+	);
+	
 	
 	mux2 #(32) shiftmux(
 	   .d0(ShiftedSrcB),
@@ -168,7 +176,7 @@ module datapath (
 
 	mux2 #(32) srcbmux(
 		.d0(SrcBWire),
-		.d1(RotExtImm),
+		.d1(Imm),
 		.s(ALUSrc),
 		.y(SrcB)
 	);
