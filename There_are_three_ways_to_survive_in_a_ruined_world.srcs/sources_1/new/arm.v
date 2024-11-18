@@ -66,6 +66,7 @@ module arm (
 		.Carry(ALUFlags[1]),
 		.Shift(Shift),
 		.ShiftControl(Instr[6:5]),
-		.RegShift(RegShift)
+		.RegShift(RegShift),
+		.rot_imm(Instr[11:8])
 	);
 endmodule

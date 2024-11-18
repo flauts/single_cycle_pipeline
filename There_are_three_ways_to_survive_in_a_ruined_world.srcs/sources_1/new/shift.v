@@ -1,7 +1,7 @@
 module shift(b, a, d, y, carry_in);
-    input [4:0] b;          // Shift amount (0 to 31)
-    input [31:0] a;         // Input value to be shifted
-    input [1:0] d;    
+    input wire [4:0] b;          // Shift amount (0 to 31)
+    input wire signed [31:0] a;         // Input value to be shifted
+    input wire [1:0] d;    
     input wire carry_in;      // Shift type selector
     output reg [31:0] y;    // Shifted result
 
@@ -21,7 +21,7 @@ module shift(b, a, d, y, carry_in);
                     y = a >> b;
                 end
             end
-            2'b10: begin // Arithmetic bhift Right (AbR)
+            2'b10: begin // Arithmetic Shift Right (ASR)
                 if (b == 0) begin
                     y = a;
                 end else begin

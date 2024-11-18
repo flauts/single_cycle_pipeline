@@ -19,7 +19,8 @@ module datapath (
 	Carry,
 	Shift,
 	ShiftControl,
-	RegShift
+	RegShift,
+	rot_imm
 );
 	input wire clk;
 	input wire reset;
@@ -59,7 +60,8 @@ module datapath (
 	input wire RegShift;
 	wire [31:0] ShiftedSrcB;
 	wire [31:0] PreResult;
-	
+	wire [31:0] RotExtImm;
+	input wire [3:0] rot_imm; 
 	
 	mux2 #(32) pcmux(
 		.d0(PCPlus4),
@@ -142,13 +144,20 @@ module datapath (
 	   .y(Rot)
 	);
 	
-	shift sh(
+	shift shsrcb(
 	   .a(WriteData),
 	   .b(Rot),
 	   .d(ShiftControl),
 	   .carry_in(Carry),
 	   .y(ShiftedSrcB)
 	);
+	
+	 rotator ror(
+	   .a(ExtImm),
+	   .b(rot_imm),
+	   .y(RotExtImm)
+	);
+	
 	
 	mux2 #(32) shiftmux(
 	   .d0(ShiftedSrcB),
@@ -159,7 +168,7 @@ module datapath (
 
 	mux2 #(32) srcbmux(
 		.d0(SrcBWire),
-		.d1(ExtImm),
+		.d1(RotExtImm),
 		.s(ALUSrc),
 		.y(SrcB)
 	);
