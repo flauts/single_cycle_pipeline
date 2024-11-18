@@ -14,7 +14,8 @@ module decode (
 	MulOp,
 	MulCode,
 	Shift,
-	RegShift
+	RegShift,
+	NoWrite
 );
 	input wire [1:0] Op;
 	input wire [5:0] Funct;
@@ -32,6 +33,7 @@ module decode (
 	output wire MulOp;
 	output wire Shift;
 	output wire RegShift;
+	output reg NoWrite;
 	reg [9:0] controls;
 	wire Branch;
 	wire ALUOp;
@@ -61,6 +63,10 @@ module decode (
 				4'b0010: ALUControl = 3'b001;
 				4'b0000: ALUControl = 3'b010;
 				4'b1100: ALUControl = 3'b011;
+                4'b1010: ALUControl = 3'b001; //cmp subs no write
+				4'b1011: ALUControl = 3'b000; //cmn add no write
+				4'b1000: ALUControl = 3'b010; //TST and no write
+				4'b1001: ALUControl = 3'b100; //TEQ eor no write
 				default: ALUControl = 3'bxxx;
 			endcase
 			if(MulOp)
@@ -73,6 +79,7 @@ module decode (
 			end
 			FlagW[1] = Funct[0];
 			FlagW[0] = Funct[0] & ((ALUControl == 2'b00) | (ALUControl == 2'b01));
+            NoWrite = (Funct[4:3] == 2'b10);
 		end
 		else begin
 			ALUControl = 2'b00;

@@ -32,6 +32,7 @@ module controller (
 	input wire [3:0] MulCode;
 	output wire Shift;
 	output wire RegShift;
+	wire NoWrite;
 	wire [1:0] FlagW;
 	wire PCS;
 	wire RegW;
@@ -52,7 +53,8 @@ module controller (
 		.MulOp(MulOp),
 		.MulCode(MulCode),
 		.Shift(Shift),
-		.RegShift(RegShift)
+		.RegShift(RegShift),
+		.NoWrite(NoWrite)
 	);
 	condlogic cl(
 		.clk(clk),
@@ -65,6 +67,7 @@ module controller (
 		.MemW(MemW),
 		.PCSrc(PCSrc),
 		.RegWrite(RegWrite),
-		.MemWrite(MemWrite)
+		.MemWrite(MemWrite),
+		.NoWrite(NoWrite)
 	);
 endmodule

@@ -1,56 +1,69 @@
-# Archivos generales de Vivado
+# General exclusions for Vivado
 *.jou
 *.log
 *.str
+*.backup*
 *.wcfg
 *.xpr
-*.bit
-*.bin
 *.pb
 *.dcp
 *.hwdef
-*.tmp
-*.bak
-*.xml
-*.html
-*.xdc
+*.bit
+*.bin
+
+# Simulation files and directories
+*.sim/
+**/sim_1/behav/xsim/
+
+# Files generated during simulation
 *.bat
-*.sh
-*.tcl
-*.ini
 *.prj
+*.tcl
+*.wdb
+*.vcd
+*.xml
 *.dbg
-*.reloc
 *.mem
+*.reloc
 *.rlx
 *.rtti
 *.svtype
+*.type
 *.xdbg
+*.ini
+*.exe
 *.obj
 *.sdb
-*.dmp
+*.db
 
-# Carpetas generadas automáticamente
-.cache/
-.sim/
-.runs/
-.ip_user_files/
-.hw/
-.Xil/
-.sdk/
-.metadata/
-
-# Bloques de diseño
-bd/
-bd/*/ip/
-
-# Archivos temporales y backups
+# Temporary files and directories
+*.tmp
+*.temp
 *.~*
-*.backup*
+*.cache/
+*.runs/
+*.xil/
 
-# Excluir carpetas de simulación y compilación
+# Automatically generated HDL files
+*_stub.v
+*_stub.vhdl
+*_funcsim.v
+*_funcsim.vhdl
+
+# Block design-related files
+bd/*/hdl/
+bd/*/ip/
+bd/*/ip/*/*.vhd
+bd/*/ip/*/*.xdc
+bd/*/ip/*/*.xml
+bd/*/ip/*/obj/
+
+# Exclude entire directories under xsim
 **/xsim.dir/
-**/xsim/
 
-# Excepciones (si necesitas alguna)
-!*.utilization.rpt
+# Other auto-generated files
+compile.bat
+elaborate.bat
+simulate.bat
+top.tcl
+testbench.tcl

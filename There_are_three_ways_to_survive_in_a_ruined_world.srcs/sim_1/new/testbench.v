@@ -35,7 +35,7 @@ module testbench;
 				$display("Simulation failed");
 			end
 	initial begin
-		#250;
+		#450;
 		$display("Simulation timed out at time %0t", $time);
 		$finish;
 	end
