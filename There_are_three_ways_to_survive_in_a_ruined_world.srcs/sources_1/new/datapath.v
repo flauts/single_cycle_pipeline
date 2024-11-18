@@ -20,7 +20,10 @@ module datapath (
 	Shift,
 	ShiftControl,
 	RegShift,
-	rot_imm
+	rot_imm,
+	PreIndex,
+	WriteBack,
+	PostIndex
 );
 	input wire clk;
 	input wire reset;
@@ -62,6 +65,9 @@ module datapath (
 	wire [31:0] PreResult;
 	wire [31:0] RotExtImm;
 	wire [31:0] Imm;
+	input wire PreIndex;
+	input wire PostIndex;
+	input wire WriteBack;
 	input wire [3:0] rot_imm; 
 	
 	mux2 #(32) pcmux(
@@ -122,10 +128,12 @@ module datapath (
 	regfile rf(
 		.clk(clk),
 		.we3(RegWrite),
+		.we1(WriteBack),
 		.ra1(RA1),
 		.ra2(RA2),
 		.ra3(RA3),
 		.wa3(WA3),
+		.wd1(PreResult),
 		.wd3(Result),
 		.r15(PCPlus8),
 		.rd1(SrcA),
@@ -188,12 +196,16 @@ module datapath (
 		.Result(PreResult),
 		.ALUFlags(ALUFlags)
 	);
-	mux2 #(32) resultmux(    
+	
+	mux4 #(32) resultmux(    
 	   .d0(PreResult),       
-	   .d1(SrcB),     
-	   .s(Shift),            
+	   .d1(SrcB),
+	   .d2(PreResult), 
+	   .d3(SrcA),    
+	   .s({PostIndex,PreIndex,Shift}),            
 	   .y(ALUResult)         
-	);                   
+	);        
+	           
 	mux2 #(32) resmux( 
 	.d0(ALUResult),   
 	.d1(ReadData),    

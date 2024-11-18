@@ -14,7 +14,7 @@ module testbench;
 	);
 	initial begin
 		reset <= 1;
-		#(22)
+		#(5)
 			;
 		reset <= 0;
 	end

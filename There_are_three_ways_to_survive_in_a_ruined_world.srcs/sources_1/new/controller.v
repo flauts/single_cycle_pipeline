@@ -14,7 +14,10 @@ module controller (
 	MulOp,
 	MulCode,
 	Shift,
-	RegShift
+	RegShift,
+	PreIndex,
+	WriteBack,
+	PostIndex
 );
 	input wire clk;
 	input wire reset;
@@ -32,6 +35,9 @@ module controller (
 	input wire [3:0] MulCode;
 	output wire Shift;
 	output wire RegShift;
+	output wire PreIndex;
+	output wire WriteBack;
+	output wire PostIndex;
 	wire NoWrite;
 	wire [1:0] FlagW;
 	wire PCS;
@@ -54,7 +60,10 @@ module controller (
 		.MulCode(MulCode),
 		.Shift(Shift),
 		.RegShift(RegShift),
-		.NoWrite(NoWrite)
+		.NoWrite(NoWrite),
+		.PreIndex(PreIndex),
+		.WriteBack(WriteBack),
+		.PostIndex(PostIndex)
 	);
 	condlogic cl(
 		.clk(clk),

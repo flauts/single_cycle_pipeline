@@ -15,7 +15,10 @@ module decode (
 	MulCode,
 	Shift,
 	RegShift,
-	NoWrite
+	NoWrite,
+	PreIndex,
+	WriteBack,
+	PostIndex
 );
 	input wire [1:0] Op;
 	input wire [5:0] Funct;
@@ -34,6 +37,9 @@ module decode (
 	output wire Shift;
 	output wire RegShift;
 	output reg NoWrite;
+	output wire PreIndex;
+	output wire WriteBack;
+	output wire PostIndex;
 	reg [9:0] controls;
 	wire Branch;
 	wire ALUOp;
@@ -45,14 +51,14 @@ module decode (
 				else
 					controls = 10'b0000001001;
 			2'b01:
-				if (Funct[0]) begin
+				if (Funct[0]) begin //ldr
 				    if(~Funct[5]) //inmediate
 					controls = 10'b0001111000;
 					else controls = 10'b0001011000; //no inmediate
 				end //mentoreg 1 in both for imm mux
 				else 
 				begin
-				if(~Funct[5]) 
+				if(~Funct[5]) //str
 					controls = 10'b1001110100;
 				else controls = 10'b1001010100;
                 end         
@@ -60,9 +66,12 @@ module decode (
 			default: controls = 10'bxxxxxxxxxx;
 		endcase
 	assign {RegSrc, ImmSrc, ALUSrc, MemtoReg, RegW, MemW, Branch, ALUOp} = controls;
-	assign MulOp = ((Funct[5:4] == 2'b00) & (MulCode == 4'b1001));
-	assign Shift = (Funct[4:1] == 4'b1101);
+	assign MulOp = ((Funct[5:4] == 2'b00) & (MulCode == 4'b1001) & Op == 2'b00);
+	assign Shift = (Funct[4:1] == 4'b1101 & Op == 2'b00);
 	assign RegShift = (MulCode[3] == 1'b0 & MulCode[0] == 1'b1 & Funct[5] == 1'b0);
+	assign PreIndex = (Op == 2'b01 & Funct[4]);
+	assign PostIndex = (Op == 2'b01 & ~Funct[4]);
+	assign WriteBack = (Op == 2'b01 & Funct[1] & Funct[4]) | (Op == 2'b01 & ~Funct[4]);
 	always @(*)
 		if (ALUOp) begin
 			case (Funct[4:1])

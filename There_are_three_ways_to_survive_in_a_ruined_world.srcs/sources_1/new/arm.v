@@ -17,6 +17,7 @@ module arm (
 	output wire [31:0] WriteData;
 	input wire [31:0] ReadData;
 	wire [3:0] ALUFlags;
+	wire PostIndex;
 	wire RegWrite;
 	wire ALUSrc;
 	wire MemtoReg;
@@ -27,6 +28,8 @@ module arm (
 	wire MulOp;
 	wire Shift;
 	wire RegShift;
+	wire PreIndex;
+	wire WriteBack;
 	controller c(
 		.clk(clk),
 		.reset(reset),
@@ -43,7 +46,10 @@ module arm (
 		.MulOp(MulOp),
 		.MulCode(Instr[7:4]),
 		.Shift(Shift),
-		.RegShift(RegShift)
+		.RegShift(RegShift),
+		.PreIndex(PreIndex),
+		.WriteBack(WriteBack),
+		.PostIndex(PostIndex)
 	);
 	datapath dp(
 		.clk(clk),
@@ -67,6 +73,9 @@ module arm (
 		.Shift(Shift),
 		.ShiftControl(Instr[6:5]),
 		.RegShift(RegShift),
-		.rot_imm(Instr[11:8])
+		.rot_imm(Instr[11:8]),
+		.PreIndex(PreIndex),
+		.WriteBack(WriteBack),
+		.PostIndex(PostIndex)
 	);
 endmodule
