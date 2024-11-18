@@ -59,14 +59,15 @@ module decode (
 	always @(*)
 		if (ALUOp) begin
 			case (Funct[4:1])
-				4'b0100: ALUControl = 3'b000;
-				4'b0010: ALUControl = 3'b001;
-				4'b0000: ALUControl = 3'b010;
+				4'b0100: ALUControl = 3'b000;//add
+				4'b0010: ALUControl = 3'b001;//sub
+				4'b0000: ALUControl = 3'b010;//
 				4'b1100: ALUControl = 3'b011;
                 4'b1010: ALUControl = 3'b001; //cmp subs no write
 				4'b1011: ALUControl = 3'b000; //cmn add no write
 				4'b1000: ALUControl = 3'b010; //TST and no write
-				4'b1001: ALUControl = 3'b100; //TEQ eor no write
+				4'b1001: ALUControl = 3'b110; //TEQ eor no write
+				4'b1111: ALUControl = 3'b111;
 				default: ALUControl = 3'bxxx;
 			endcase
 			if(MulOp)
