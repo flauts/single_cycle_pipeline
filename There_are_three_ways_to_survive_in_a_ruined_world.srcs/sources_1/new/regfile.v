@@ -29,7 +29,8 @@ module regfile (
 	reg [31:0] rf [14:0];
 	always @(posedge clk)
 		if (we3) rf[wa3] <= wd3;
-        else if(we1) rf[ra1] <= wd1;   
+	always @(posedge clk)
+        if(we1) rf[ra1] <= wd1;   
                        
 	assign rd1 = (ra1 == 4'b1111 ? r15 : rf[ra1]);
 	assign rd2 = (ra2 == 4'b1111 ? r15 : rf[ra2]);

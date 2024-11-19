@@ -4,14 +4,15 @@ module condcheck (
 	CondEx
 );
 	input wire [3:0] Cond;
-	input wire [3:0] Flags;
+	input wire [4:0] Flags;
 	output reg CondEx;
 	wire neg;
 	wire zero;
 	wire carry;
 	wire overflow;
+	wire q;
 	wire ge;
-	assign {neg, zero, carry, overflow} = Flags;
+	assign {neg, zero, carry, overflow,q} = Flags;
 	assign ge = neg == overflow;
 	always @(*)
 		case (Cond)

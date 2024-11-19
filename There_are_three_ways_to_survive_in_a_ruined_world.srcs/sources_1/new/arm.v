@@ -16,7 +16,7 @@ module arm (
 	output wire [31:0] ALUResult;
 	output wire [31:0] WriteData;
 	input wire [31:0] ReadData;
-	wire [3:0] ALUFlags;
+	wire [4:0] ALUFlags;
 	wire PostIndex;
 	wire RegWrite;
 	wire ALUSrc;
@@ -24,12 +24,13 @@ module arm (
 	wire PCSrc;
 	wire [1:0] RegSrc;
 	wire [1:0] ImmSrc;
-	wire [2:0] ALUControl;
+	wire [3:0] ALUControl;
 	wire MulOp;
 	wire Shift;
 	wire RegShift;
 	wire PreIndex;
 	wire WriteBack;
+	wire SaturatedOp;
 	controller c(
 		.clk(clk),
 		.reset(reset),
@@ -44,12 +45,13 @@ module arm (
 		.MemtoReg(MemtoReg),
 		.PCSrc(PCSrc),
 		.MulOp(MulOp),
-		.MulCode(Instr[7:4]),
+		.SpecialCode(Instr[7:4]),
 		.Shift(Shift),
 		.RegShift(RegShift),
 		.PreIndex(PreIndex),
 		.WriteBack(WriteBack),
-		.PostIndex(PostIndex)
+		.PostIndex(PostIndex),
+		.SaturatedOp(SaturatedOp)
 	);
 	datapath dp(
 		.clk(clk),
@@ -76,6 +78,7 @@ module arm (
 		.rot_imm(Instr[11:8]),
 		.PreIndex(PreIndex),
 		.WriteBack(WriteBack),
-		.PostIndex(PostIndex)
+		.PostIndex(PostIndex),
+		.SaturatedOp(SaturatedOp)
 	);
 endmodule

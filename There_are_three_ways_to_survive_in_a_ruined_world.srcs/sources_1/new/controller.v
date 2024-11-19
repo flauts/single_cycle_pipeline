@@ -12,32 +12,34 @@ module controller (
 	MemtoReg,
 	PCSrc,
 	MulOp,
-	MulCode,
+	SpecialCode,
 	Shift,
 	RegShift,
 	PreIndex,
 	WriteBack,
-	PostIndex
+	PostIndex,
+	SaturatedOp
 );
 	input wire clk;
 	input wire reset;
 	input wire [31:12] Instr;
-	input wire [3:0] ALUFlags;
+	input wire [4:0] ALUFlags;
 	output wire [1:0] RegSrc;
 	output wire RegWrite;
 	output wire [1:0] ImmSrc;
 	output wire ALUSrc;
-	output wire [2:0] ALUControl;
+	output wire [3:0] ALUControl;
 	output wire MemWrite;
 	output wire MemtoReg;
 	output wire PCSrc;
 	output wire MulOp;
-	input wire [3:0] MulCode;
+	input wire [3:0] SpecialCode;
 	output wire Shift;
 	output wire RegShift;
 	output wire PreIndex;
 	output wire WriteBack;
 	output wire PostIndex;
+	output wire SaturatedOp;
 	wire NoWrite;
 	wire [1:0] FlagW;
 	wire PCS;
@@ -57,13 +59,14 @@ module controller (
 		.RegSrc(RegSrc),
 		.ALUControl(ALUControl),
 		.MulOp(MulOp),
-		.MulCode(MulCode),
+		.SpecialCode(SpecialCode),
 		.Shift(Shift),
 		.RegShift(RegShift),
 		.NoWrite(NoWrite),
 		.PreIndex(PreIndex),
 		.WriteBack(WriteBack),
-		.PostIndex(PostIndex)
+		.PostIndex(PostIndex),
+		.SaturatedOp(SaturatedOp)
 	);
 	condlogic cl(
 		.clk(clk),

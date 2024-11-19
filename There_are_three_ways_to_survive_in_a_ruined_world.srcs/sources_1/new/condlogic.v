@@ -15,7 +15,7 @@ module condlogic (
 	input wire clk;
 	input wire reset;
 	input wire [3:0] Cond;
-	input wire [3:0] ALUFlags;
+	input wire [4:0] ALUFlags;
 	input wire [1:0] FlagW;
 	input wire PCS;
 	input wire RegW;
@@ -25,22 +25,23 @@ module condlogic (
 	output wire MemWrite;
 	input wire NoWrite;
 	wire [1:0] FlagWrite;
-	wire [3:0] Flags;
+	wire [4:0] Flags;
 	wire CondEx;
 	flopenr #(2) flagreg1(
 		.clk(clk),
 		.reset(reset),
 		.en(FlagWrite[1]),
-		.d(ALUFlags[3:2]),
-		.q(Flags[3:2])
+		.d(ALUFlags[4:3]),
+		.q(Flags[4:3])
 	);
 	flopenr #(2) flagreg0(
 		.clk(clk),
 		.reset(reset),
 		.en(FlagWrite[0]),
-		.d(ALUFlags[1:0]),
-		.q(Flags[1:0])
+		.d(ALUFlags[2:1]),
+		.q(Flags[2:1])
 	);
+	assign Flags[0] = ALUFlags[0];
 	condcheck cc(
 		.Cond(Cond),
 		.Flags(Flags),

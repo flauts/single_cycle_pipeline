@@ -23,7 +23,8 @@ module datapath (
 	rot_imm,
 	PreIndex,
 	WriteBack,
-	PostIndex
+	PostIndex,
+	SaturatedOp
 );
 	input wire clk;
 	input wire reset;
@@ -31,10 +32,10 @@ module datapath (
 	input wire RegWrite;
 	input wire [1:0] ImmSrc;
 	input wire ALUSrc;
-	input wire [2:0] ALUControl;
+	input wire [3:0] ALUControl;
 	input wire MemtoReg;
 	input wire PCSrc;
-	output wire [3:0] ALUFlags;
+	output wire [4:0] ALUFlags;
 	output wire [31:0] PC;
 	input wire [31:0] Instr;
 	output wire [31:0] ALUResult;
@@ -68,8 +69,9 @@ module datapath (
 	input wire PreIndex;
 	input wire PostIndex;
 	input wire WriteBack;
+	input wire SaturatedOp;
 	input wire [3:0] rot_imm; 
-	
+	wire [31:0] SrcBWire2;
 	mux2 #(32) pcmux(
 		.d0(PCPlus4),
 		.d1(Result),
@@ -186,7 +188,14 @@ module datapath (
 		.d0(SrcBWire),
 		.d1(Imm),
 		.s(ALUSrc),
-		.y(SrcB)
+		.y(SrcBWire2)
+	);
+	
+	mux2 #(32) srcbmux2(
+	   .d0(SrcBWire2),
+	   .d1(WriteData),
+	   .s(SaturatedOp),
+	   .y(SrcB)
 	);
 	alu alu(
 		.a(SrcA),
