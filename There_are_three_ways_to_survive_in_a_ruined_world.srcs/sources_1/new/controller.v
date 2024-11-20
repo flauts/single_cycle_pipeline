@@ -18,7 +18,8 @@ module controller (
 	PreIndex,
 	WriteBack,
 	PostIndex,
-	SaturatedOp
+	SaturatedOp,
+	Carry
 );
 	input wire clk;
 	input wire reset;
@@ -40,6 +41,7 @@ module controller (
 	output wire WriteBack;
 	output wire PostIndex;
 	output wire SaturatedOp;
+	output wire Carry;
 	wire NoWrite;
 	wire [1:0] FlagW;
 	wire PCS;
@@ -80,6 +82,7 @@ module controller (
 		.PCSrc(PCSrc),
 		.RegWrite(RegWrite),
 		.MemWrite(MemWrite),
-		.NoWrite(NoWrite)
+		.NoWrite(NoWrite),
+		.Carry(Carry)
 	);
 endmodule

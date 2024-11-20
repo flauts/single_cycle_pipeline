@@ -10,7 +10,8 @@ module condlogic (
 	PCSrc,
 	RegWrite,
 	MemWrite,
-	NoWrite
+	NoWrite,
+	Carry
 );
 	input wire clk;
 	input wire reset;
@@ -23,6 +24,7 @@ module condlogic (
 	output wire PCSrc;
 	output wire RegWrite;
 	output wire MemWrite;
+	output wire Carry;
 	input wire NoWrite;
 	wire [1:0] FlagWrite;
 	wire [4:0] Flags;
@@ -41,12 +43,13 @@ module condlogic (
 		.d(ALUFlags[2:1]),
 		.q(Flags[2:1])
 	);
-	assign Flags[0] = ALUFlags[0];
 	condcheck cc(
 		.Cond(Cond),
 		.Flags(Flags),
 		.CondEx(CondEx)
 	);
+	assign Flags[0] = ALUFlags[0];
+	assign Carry = Flags[2];
 	assign FlagWrite = FlagW & {2 {CondEx}};
 	assign RegWrite = RegW & CondEx & ~NoWrite;
     assign MemWrite = MemW & CondEx;

@@ -31,7 +31,7 @@ module shift(b, a, d, y, carry_in);
             2'b11: begin // Rotate Right (ROR) or Rotate Right with Extend (RRX)
                 if (b == 0) begin
                     // RRX
-                    y = {1'b1, a[31:1]};
+                    y = {carry_in, a[31:1]};
                 end else begin
                     y = (a >> b) | (a << (32 - b));
                 end

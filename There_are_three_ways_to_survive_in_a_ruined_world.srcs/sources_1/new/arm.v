@@ -51,7 +51,8 @@ module arm (
 		.PreIndex(PreIndex),
 		.WriteBack(WriteBack),
 		.PostIndex(PostIndex),
-		.SaturatedOp(SaturatedOp)
+		.SaturatedOp(SaturatedOp),
+		.Carry(Carry)
 	);
 	datapath dp(
 		.clk(clk),
@@ -71,7 +72,7 @@ module arm (
 		.ReadData(ReadData),
 		.MulOp(MulOp),
 		.shamnt5(Instr[11:7]),
-		.Carry(ALUFlags[1]),
+		.Carry(Carry),
 		.Shift(Shift),
 		.ShiftControl(Instr[6:5]),
 		.RegShift(RegShift),
