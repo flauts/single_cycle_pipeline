@@ -34,6 +34,11 @@ module alu (
                     Result = 32'h80000000; // Mínimo negativo
                 else Result = sum;
                 end
+                //when saturated, operators are inversed
+                //maybe thats why qsub sometimes
+                //throws out not accurate result?
+                //a -b != b - a
+                //becasue qadd looks fine 
         endcase
     end
 

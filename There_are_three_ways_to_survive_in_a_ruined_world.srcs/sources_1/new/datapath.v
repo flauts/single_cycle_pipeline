@@ -129,6 +129,7 @@ module datapath (
 	); 
 	regfile rf(
 		.clk(clk),
+		.reset(reset),
 		.we3(RegWrite),
 		.we1(WriteBack),
 		.ra1(RA1),
